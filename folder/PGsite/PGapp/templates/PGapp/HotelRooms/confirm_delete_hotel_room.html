@@ -1,0 +1,17 @@
+{% extends 'PGapp/Main_Logic/base.html' %}
+
+
+{% block content %}
+	<div>
+		<h1>Hotel room deleting process</h1>
+		<p>You sure want to delete {{ hotel_room_source.title }} ?</p>
+		<form method="post">
+			{% csrf_token %}
+			<button type='submit' class="btn btn-danger btn-lg">Delete</button>
+			<a href="{% url 'PGapp:hotel_rooms' %}"
+			   class="btn btn-secondary btn-lg active"
+			   role="button"
+			   aria-pressed="true">Cancel</a>
+		</form>
+	</div>
+{% endblock %}

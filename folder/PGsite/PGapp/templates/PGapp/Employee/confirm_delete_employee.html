@@ -1,0 +1,17 @@
+{% extends 'PGapp/Main_Logic/base.html' %}
+
+
+{% block content %}
+	<div>
+		<h1>Employee deleting process</h1>
+		<p>You sure want to delete {{ employee.name }} ?</p>
+		<form method="post">
+			{% csrf_token %}
+			<button type='submit' class="btn btn-danger btn-lg">Delete</button>
+			<a href="{% url 'PGapp:employees' %}"
+			   class="btn btn-secondary btn-lg active"
+			   role="button"
+			   aria-pressed="true">Cancel</a>
+		</form>
+	</div>
+{% endblock %}
