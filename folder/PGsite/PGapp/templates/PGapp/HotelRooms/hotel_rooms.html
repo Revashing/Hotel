@@ -17,7 +17,7 @@
 					{% if element.picture_thumbnail %}
 						<img src="{{ element.picture_thumbnail.url }}">
 					{% endif %}
-					<p>{{ element.title }}</p>
+					<a href="{% url 'PGapp:room_full_view' element.id %}">{{ element.title }}</a>
 					<p>{{ element.price }}</p>
 					<p>{{ element.description }}</p>
 				</form>
