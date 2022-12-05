@@ -164,6 +164,11 @@ def add_hotel_room(request):
 		return render(request, 'PGapp/HotelRooms/add_hotel_room.html', {'hotel_form': HotelRoomsForm})
 
 
+def room_full_view(request, hotel_room_id):
+	hotel_room_source = HotelRooms.objects.get(pk=hotel_room_id)
+	return render(request, 'PGapp/HotelRooms/room_full_view.html', {'hotel_room_source': hotel_room_source})
+
+
 def edit_hotel_room(request, hotel_room_id):
 	hotel_room_source = HotelRooms.objects.get(pk=hotel_room_id)
 	hotel_form = HotelRoomsForm(request.POST or None, request.FILES or None, instance=hotel_room_source)
@@ -174,8 +179,8 @@ def edit_hotel_room(request, hotel_room_id):
 	return render(request, 'PGapp/HotelRooms/edit_hotel_room.html', {'hotel_form': hotel_form})
 
 
-def delete_hotel_room(request, id):
-	hotel_room_source = HotelRooms.objects.get(pk=id)
+def delete_hotel_room(request, hotel_room_id):
+	hotel_room_source = HotelRooms.objects.get(pk=hotel_room_id)
 	if request.method == 'POST':
 		hotel_room_source.delete()
 		return HttpResponseRedirect(reverse('PGapp:hotel_rooms'))
