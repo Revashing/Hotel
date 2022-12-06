@@ -11,6 +11,7 @@ from easy_thumbnails.widgets import ImageClearableFileInput
 class PGSRoomReservingForm(ModelForm):
 	name = forms.CharField(
 		label='Room',
+		min_length=2,
 		widget=forms.TextInput(attrs={
 			'class': 'form-control',
 			'placeholder': 'Enter room name'
@@ -42,6 +43,24 @@ class PGSRoomReservingForm(ModelForm):
 	def __init__(self, *args, **kwargs):
 		super(PGSRoomReservingForm, self).__init__(*args, **kwargs)
 		self.fields['cancelled'].required = False
+
+	def clean(self):
+		super().clean()
+		errors = {}
+		if not self.cleaned_data['name']:
+			errors['name'] = ValidationError(
+				'Thou name is too short')
+		if not self.cleaned_data['reserving_date']:
+			errors['reserving_date'] = ValidationError(
+				'Please enter date')
+		if not self.cleaned_data['reserving_time']:
+			errors['reserving_time'] = ValidationError(
+				'Please enter time')
+		if self.cleaned_data['price'] < 0:
+			errors['price'] = ValidationError(
+				'Please enter positive price number')
+		if errors:
+			raise ValidationError(errors)
 
 
 class PGSRubricForm(ModelForm):
@@ -138,3 +157,4 @@ class HotelRoomsForm(forms.ModelForm):
 	class Meta:
 		model = HotelRooms
 		fields = '__all__'
+
