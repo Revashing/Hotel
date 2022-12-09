@@ -23,8 +23,10 @@ def add_room(request):
 		form = PGSRoomReservingForm(request.POST)
 		if form.is_valid():
 			form.save()
-			messages.success(request, 'Room added successfully')
+			messages.success(request, 'Room created successfully')
 			return HttpResponseRedirect(reverse('PGapp:room_reserving'))
+		else:
+			messages.error(request, 'Failure occurs')
 	context = {
 		'form': form,
 		}
