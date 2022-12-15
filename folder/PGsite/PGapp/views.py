@@ -5,8 +5,29 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse, reverse_lazy
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
 from django.core.paginator import Paginator
 
+
+# AUTHENTICATION
+
+def login_to_site(request):
+	username = request.POST['username']
+	password = request.POST['password']
+	user = authenticate(request, username=username, password=password)
+	if user is not None:
+		login(request, user)
+		return HttpResponseRedirect(reverse('PGapp/Main_Logic/start_page.html'))
+	else:
+		return render(request, 'PGapp:login.html')
+
+
+def logout_from_site(request):
+	logout(request)
+	return HttpResponseRedirect(reverse('PGapp/Main_Logic/start_page.html'))
+
+
+# CONTENT of the main logic of the SITE
 
 def start_page(request):
 	return render(request, 'PGapp/Main_Logic/start_page.html')
