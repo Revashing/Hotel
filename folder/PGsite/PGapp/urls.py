@@ -1,11 +1,22 @@
 from django.urls import path
 from .views import *
+from django.contrib.auth.views import LoginView, LogoutView
 
 
 app_name = 'PGapp'
 
 urlpatterns = [
 	path('', start_page, name='start_page'),
+	path(
+		'accounts/login/',
+		LoginView.as_view(template_name='PGapp/Entrance/login.html', next_page='PGapp:start_page'),
+		name='login'
+		),
+	path(
+		'accounts/logout/',
+		LogoutView.as_view(next_page='PGapp:login'),
+		name='logout_verification'
+		),
 
 	path('room_reserving', room_reserving, name='room_reserving'),
 	path('add_room', add_room, name='add_room'),

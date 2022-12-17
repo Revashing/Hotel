@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-s6@y9kpv!!9+eb0hw5d5^1n$0c@8jo+my)0g=s71)jme^l(8x6'
+SECRET_KEY = os.environ.get("DJANGO_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 	'crispy_forms',
 	'django_cleanup',
 	'easy_thumbnails',
+	'social_django',
 	]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
@@ -73,6 +74,8 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
+				'social_django.context_processors.backends',
+				'social_django.context_processors.login_redirect',
 				],
 			},
 		},
@@ -93,6 +96,10 @@ DATABASES = {
 		"PORT": os.environ.get("SQL_PORT", "5432"),
 		}
 	}
+
+SOCIAL_AUTH_JSONFIELD_ENABLED = True
+SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get("VK_KEY")
+SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get("VK_SECRET")
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -135,12 +142,12 @@ class NoForbiddenCharsValidator:
 		for forbidden_char in self.forbidden_chars:
 			if forbidden_char in password:
 				raise ValidationError(
-					'Password must not contain forbidden characters %s' % ', '.join(self.forbidden_chars),
+					'Password must not contain forbidden characters %s'%', '.join(self.forbidden_chars),
 					code='forbidden_chars_present'
 					)
 
 	def get_help_text(self):
-		return 'Password must not contain forbidden characters %s' % ', '.join(self.forbidden_chars)
+		return 'Password must not contain forbidden characters %s'%', '.join(self.forbidden_chars)
 
 
 # Internationalization
@@ -186,3 +193,14 @@ BOOTSTRAP4 = {
 	'horizontal_field_class': '',
 	'horizontal_error_class': '',
 	}
+
+AUTHENTICATION_BACKENDS = (
+	'social_core.backends.vk.VKOAuth2',
+	'django.contrib.auth.backends.ModelBackend',
+	)
+
+LOGIN_URL = 'PGapp:login.html'
+LOGIN_REDIRECT_URL = 'PGapp/Main_Logic/start_page.html'
+LOGOUT_REDIRECT_URL = 'PGapp:start_page.html'
+PASSWORD_RESET_TIMEOUT_DAYS = 3
+
