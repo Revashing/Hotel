@@ -1,61 +1,88 @@
-{% load static %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-	<link rel="stylesheet" href="{% static 'PGapp/css/style.css' %}">
-	<meta charset="UTF-8">
-	<title>Title</title>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="{% url 'PGapp:start_page' %}">Ottielle</a>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+	<title>{% block head_title %}{% endblock %}</title>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
+	      integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<style>
+        .form-group {
+            margin-top: 10px;
+        }
+        .middle_div {
+            margin: auto;
+            width: 30%;
+        }
+        .middle_div_rooms {
+            margin: auto;
+            width: 30%;
+        }
+        .middle_div_buttons {
+            width: 44%;
+	        margin-left: 37%;
+        }
+        .middle_div_paginator {
+            margin: auto;
+            width: 8%;
+        }
+        .middle_h {
+            text-align: center;
+        }
+        .middle_p {
+            text-align: center;
+        }
+        .middle_p_white {
+            text-align: center;
+	        color: white;
+        }
+        .middle_image {
+            display: block;
+	        margin-left: auto;
+	        margin-right: auto;
+        }
+        .middle_image_high_format {
 
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav mr-auto">
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'PGapp:hotel_rooms' %}">Hotel Rooms<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'PGapp:room_reserving' %}">Rooms<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'PGapp:rubrics' %}">Rubrics<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item active">
-					<a class="nav-link" href="{% url 'PGapp:employees' %}">Hotel Employees<span class="sr-only">(current)</span></a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'PGapp:add_room' %}">Add room</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'PGapp:add_rubric' %}">Add rubric</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'PGapp:add_employee' %}">Add employee</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'PGapp:add_hotel_room' %}">Add hotel room</a>
-				</li>
-			</ul>
-			<form class="form-inline my-2 my-lg-0">
-				<a href="{% url 'PGapp:login' %}" class="btn btn-outline-info">Login</a>
-				&nbsp;
-				<a href="{% url 'PGapp:logout_verification' %}" class="btn btn-outline-light">Logout</a>
-			</form>
-		</div>
-	</nav>
+	        margin-left: 25%;
+        }
+	</style>
+	{% block extra_head %}
+	{% endblock %}
 </head>
 <body>
-	<div>
-		<div class="col-8">
-				<hr class="mt-0 mb-4">
-				{% block content %}
-				{% endblock %}
-			</div>
-		</div>
+{% block body %}
+
+{% if messages %}
+	<div class="p-2">
+		{% for message in messages %}
+			<div class="text-center border-bottom">{{message}}</div>
+		{% endfor %}
 	</div>
+{% endif %}
+
+<div class="p-3 mb-3 bg-dark">
+	<div class="container d-flex justify-content-between">
+		{% if user.is_authenticated %}
+			<div><a class="btn btn-light" href="{% url 'PGapp:start_page' %}" role="button">Home</a>
+				<a class="btn btn-outline-light" href="{% url 'PGapp:employees' %}">Employees</a>
+				<a class="btn btn-outline-light" href="{% url 'PGapp:hotel_rooms' %}">Hotel Rooms</a>
+				<a class="btn btn-outline-light" href="{% url 'PGapp:rubrics' %}">Rubrics</a></div>
+
+			<div><a class="btn btn-outline-light" href="{% url 'account_email' %}">Change E-mail</a>
+				<a class="btn btn-outline-light" href="{% url 'account_logout' %}">Sign Out</a></div>
+		{% else %}
+			<div><a class="btn btn-outline-light" href="{% url 'account_login' %}">Sign In</a></div>
+			<div><a class="btn btn-outline-light" href="{% url 'account_signup' %}">Sign Up</a></div>
+		{% endif %}
+	</div>
+</div>
+<div class="middle_div"></div>
+{% block content %}
+{% endblock %}
+{% endblock %}
+{% block extra_body %}
+{% endblock %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4"
+        crossorigin="anonymous"></script>
 </body>
 </html>

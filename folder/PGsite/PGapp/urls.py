@@ -7,11 +7,13 @@ app_name = 'PGapp'
 
 urlpatterns = [
 	path('', start_page, name='start_page'),
+	path('accounts/signup', signup, name='signup'),
 	path(
 		'accounts/login/',
-		LoginView.as_view(template_name='PGapp/Entrance/login.html', next_page='PGapp:start_page'),
+		LoginView.as_view(template_name='PGapp/Account/login.html', next_page='PGapp:start_page'),
 		name='login'
 		),
+
 	path(
 		'accounts/logout/',
 		LogoutView.as_view(next_page='PGapp:login'),

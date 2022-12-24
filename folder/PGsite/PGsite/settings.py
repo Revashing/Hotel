@@ -29,7 +29,7 @@ SECRET_KEY = os.environ.get("DJANGO_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 # Application definition
 
@@ -42,12 +42,21 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'django.contrib.postgres',
+	'django.contrib.sites',
 	'django_extensions',
 	'crispy_forms',
 	'django_cleanup',
 	'easy_thumbnails',
-	'social_django',
+	'allauth',
+	'allauth.account',
+	'allauth.socialaccount',
+	'allauth.socialaccount.providers.google',
+	'allauth.socialaccount.providers.github',
+	'allauth.socialaccount.providers.facebook',
+	'allauth.socialaccount.providers.yandex',
 	]
+
+SITE_ID = 1
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
@@ -66,7 +75,10 @@ ROOT_URLCONF = 'PGsite.urls'
 TEMPLATES = [
 	{
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
-		'DIRS': [],
+		'DIRS': [
+			os.path.join(BASE_DIR, 'templates'),
+			os.path.join(BASE_DIR, 'PGapp', 'templates', 'PGapp'),
+			],
 		'APP_DIRS': True,
 		'OPTIONS': {
 			'context_processors': [
@@ -74,8 +86,7 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
-				'social_django.context_processors.backends',
-				'social_django.context_processors.login_redirect',
+				'django.template.context_processors.request',
 				],
 			},
 		},
@@ -97,9 +108,18 @@ DATABASES = {
 		}
 	}
 
-SOCIAL_AUTH_JSONFIELD_ENABLED = True
-SOCIAL_AUTH_VK_OAUTH2_KEY = os.environ.get("VK_KEY")
-SOCIAL_AUTH_VK_OAUTH2_SECRET = os.environ.get("VK_SECRET")
+SOCIALACCOUNT_PROVIDERS = {
+	'google': {
+		'SCOPE': [
+			'profile',
+			'email',
+			],
+		'AUTH_PARAMS': {
+			'access_type': 'online',
+			},
+		'OAUTH_PKCE_ENABLED': True,
+		}
+	}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -194,13 +214,13 @@ BOOTSTRAP4 = {
 	'horizontal_error_class': '',
 	}
 
-AUTHENTICATION_BACKENDS = (
-	'social_core.backends.vk.VKOAuth2',
+AUTHENTICATION_BACKENDS = [
 	'django.contrib.auth.backends.ModelBackend',
-	)
+	'allauth.account.auth_backends.AuthenticationBackend',
+	]
 
-LOGIN_URL = 'PGapp:login.html'
-LOGIN_REDIRECT_URL = 'PGapp/Main_Logic/start_page.html'
-LOGOUT_REDIRECT_URL = 'PGapp:start_page.html'
+LOGIN_URL = 'PGapp:login'
+LOGIN_REDIRECT_URL = 'PGapp:start_page'
+ACCOUNT_LOGOUT_REDIRECT_URL = 'PGapp:login'
 PASSWORD_RESET_TIMEOUT_DAYS = 3
 

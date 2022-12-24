@@ -3,29 +3,16 @@
 
 {% block content %}
 	{% if hotel_room_source %}
-		<div class="w-25 p-3" style="background-color: #9EC4DB;">
+		<div>
 			<form method="post" enctype="multipart/form-data">
 				{% if hotel_room_source.picture %}
-					<img src="{{ hotel_room_source.picture.url }}">
+					<img src="{{ hotel_room_source.picture.url }}" class="middle_image_high_format">
 				{% endif %}
-				<p>{{ hotel_room_source.title }}</p>
-				<p>{{ hotel_room_source.price }}</p>
-				<p>{{ hotel_room_source.description }}</p>
+				<p class="middle_p_white" style="background-color: #212529;">{{ hotel_room_source.title }}</p>
 			</form>
 		</div>
 		</br>
 	{% else %}
 		<p>Nothing is here</p>
 	{% endif %}
-	<div>
-		{% if page.has_previous %}
-			<a href="?page={{ page.previous_page_number }}">&lt;</a>
-			&nbsp;&nbsp;|&nbsp;&nbsp;
-		{% endif %}
-		Page №{{ page.number }} of {{ page.paginator.num_pages }}
-		{% if page.has_next %}
-			&nbsp;&nbsp;|&nbsp;&nbsp;
-			<a href="?page={{ page.next_page_number }}">&gt;</a>
-		{% endif %}
-	</div>
 {% endblock %}

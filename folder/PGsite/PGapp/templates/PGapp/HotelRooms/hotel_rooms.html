@@ -12,28 +12,32 @@
 	{% endfor %}
 	{% if hotel_room_source %}
 		{% for element in hotel_room_source %}
-			<div class="w-25 p-3" style="background-color: #9EC4DB;">
+			<div class="middle_div_rooms" style="background-color: #212529;">
+				<hr>
 				<form method="post" enctype="multipart/form-data">
 					{% if element.picture_thumbnail %}
-						<img src="{{ element.picture_thumbnail.url }}">
+						<img src="{{ element.picture_thumbnail.url }}" class="middle_image">
 					{% endif %}
-					<a href="{% url 'PGapp:room_full_view' element.id %}">{{ element.title }}</a>
-					<p>{{ element.price }}</p>
-					<p>{{ element.description }}</p>
+					<div class="middle_div">
+						<a href="{% url 'PGapp:room_full_view' element.id %}" class="btn btn-outline-light">
+							<p class="middle_p">{{ element.title }}</p></a></div>
+					<p class="middle_p_white">{{ element.price }}$ / day</p>
+					<p class="middle_p_white">{{ element.description }}</p>
+					<div class="middle_div_buttons">
+						<a href="{% url 'PGapp:edit_hotel_room' element.id %}"
+						   class="btn btn-light">Edit</a>
+						<a href="{% url 'PGapp:confirm_delete_hotel_room' element.id %}"
+						   class="btn btn-light">Delete</a>
+					<hr>
+					</div>
 				</form>
-			</div>
-			<div>
-				<a href="{% url 'PGapp:edit_hotel_room' element.id %}"
-				   class="btn btn-info">Edit</a>
-				<a href="{% url 'PGapp:confirm_delete_hotel_room' element.id %}"
-				   class="btn btn-danger">Delete</a>
 			</div>
 			</br>
 		{% endfor %}
 	{% else %}
 		<p>Nothing is here</p>
 	{% endif %}
-	<div>
+	<div class="middle_div_paginator">
 		{% if page.has_previous %}
 			<a href="?page={{ page.previous_page_number }}">&lt;</a>
 			&nbsp;&nbsp;|&nbsp;&nbsp;
