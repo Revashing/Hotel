@@ -12,16 +12,18 @@
 	{% endfor %}
 	{% if rubric_source %}
 		{% for element in rubric_source %}
-			<div>
-				<h3>{{ element.name }}</h3>
-				<p>{{ element.description }}</p>
-				<p>{{ element.tags }}</p>
-			</div>
-			<div>
-				<a href="{% url 'PGapp:edit_rubric' element.id %}"
-				   class="btn btn-info">Edit</a>
-				<a href="{% url 'PGapp:confirm_delete_rubric' element.id %}"
-				   class="btn btn-danger">Delete</a>
+			<div class="middle_div"  style="background-color: #212529;">
+				<hr>
+				<h3 class="middle_h_white">{{ element.name }}</h3>
+				<p class="middle_p_white">{{ element.description }}</p>
+				<p class="middle_p_white">{{ element.tags }}</p>
+				<div class="middle_div_buttons">
+					<a href="{% url 'PGapp:edit_rubric' element.id %}"
+					   class="btn btn-light">Edit</a>
+					<a href="{% url 'PGapp:confirm_delete_rubric' element.id %}"
+					   class="btn btn-light">Delete</a>
+				</div>
+				<hr>
 			</div>
 		{% endfor %}
 	{% else %}
